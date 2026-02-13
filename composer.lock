@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3d752df576e5c422649b7834b7dd7315",
+    "content-hash": "a9dfaf01c3bcb9bbcb4f320b665f86d7",
     "packages": [
         {
             "name": "brick/math",
@@ -362,19 +362,20 @@
         },
         {
             "name": "freedomtech-hosting/polydock-amazeeai-backend-client-php",
-            "version": "v0.0.5",
+            "version": "v0.0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amazeeio/polydock-amazeeai-backend-php-lib.git",
-                "reference": "5b0c8ac37cc4db7fb69d34a5d09875f4a342760b"
+                "reference": "f4841e97eabe7c78bda35e146dfd9b9d13dddb4f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amazeeio/polydock-amazeeai-backend-php-lib/zipball/5b0c8ac37cc4db7fb69d34a5d09875f4a342760b",
-                "reference": "5b0c8ac37cc4db7fb69d34a5d09875f4a342760b",
+                "url": "https://api.github.com/repos/amazeeio/polydock-amazeeai-backend-php-lib/zipball/f4841e97eabe7c78bda35e146dfd9b9d13dddb4f",
+                "reference": "f4841e97eabe7c78bda35e146dfd9b9d13dddb4f",
                 "shasum": ""
             },
             "require": {
+                "ext-curl": "*",
                 "symfony/http-client": "^7.2"
             },
             "type": "library",
@@ -396,9 +397,9 @@
             "description": "The Freedom Tech amazee.ai Private AI PHP library",
             "support": {
                 "issues": "https://github.com/amazeeio/polydock-amazeeai-backend-php-lib/issues",
-                "source": "https://github.com/amazeeio/polydock-amazeeai-backend-php-lib/tree/v0.0.5"
+                "source": "https://github.com/amazeeio/polydock-amazeeai-backend-php-lib/tree/v0.0.6"
             },
-            "time": "2025-03-24T02:16:39+00:00"
+            "time": "2026-02-13T00:30:17+00:00"
         },
         {
             "name": "graham-campbell/result-type",
