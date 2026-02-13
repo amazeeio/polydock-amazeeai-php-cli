@@ -23,6 +23,7 @@ class HealthCommand extends AmazeeAIBaseCommand
 
     /**
      * Execute the console command.
+     *
      * @throws BindingResolutionException
      */
     public function handle(): void
