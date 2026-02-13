@@ -2,13 +2,9 @@
 
 namespace App\Commands;
 
-use Illuminate\Console\Scheduling\Schedule;
-use LaravelZero\Framework\Commands\Command;
-
-use FreedomtechHosting\PolydockAmazeeAIBackendClient\Client;
-use FreedomtechHosting\PolydockAmazeeAIBackendClient\Exception\HttpException;
-
 use App\Enums\TokenType;
+use FreedomtechHosting\PolydockAmazeeAIBackendClient\Exception\HttpException;
+use LaravelZero\Framework\Commands\Command;
 
 class AdminCreateUserCommand extends AmazeeAIBaseCommand
 {
@@ -29,17 +25,19 @@ class AdminCreateUserCommand extends AmazeeAIBaseCommand
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $email = $this->argument('email');
-        if(!$email) {
+        if (! $email) {
             $this->error('No email provided');
+
             return;
         }
 
         $password = $this->argument('password');
-        if(!$password) {
+        if (! $password) {
             $this->error('No password provided');
+
             return;
         }
 
@@ -49,11 +47,12 @@ class AdminCreateUserCommand extends AmazeeAIBaseCommand
             $existingUsers = $this->client->searchUsers($email);
             if (count($existingUsers) > 0) {
                 $this->error('A user with this email already exists');
+
                 return;
             }
 
             $response = $this->client->createUser($email, $password);
-            $this->info("User created successfully!");
+            $this->info('User created successfully!');
             $this->table(['Field', 'Value'], [
                 ['Email', $response['email']],
                 ['ID', $response['id']],
@@ -61,12 +60,14 @@ class AdminCreateUserCommand extends AmazeeAIBaseCommand
         } catch (HttpException $e) {
             $this->error(sprintf(
                 'HTTP Error %d: %s',
-                $e->getStatusCode(), 
+                $e->getStatusCode(),
                 json_encode($e->getResponse(), JSON_PRETTY_PRINT)
             ));
+
             return;
         } catch (\Exception $e) {
             $this->error($e->getMessage());
+
             return;
         }
     }

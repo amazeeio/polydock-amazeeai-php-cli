@@ -24,19 +24,20 @@ class AdminGetRegionCommand extends AmazeeAIBaseCommand
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         try {
             $regionId = $this->argument('id');
-            if (!$regionId) {
+            if (! $regionId) {
                 $this->error('Region ID is required');
+
                 return 1;
             }
 
             $this->initializeClient(TokenType::ADMIN_TOKEN);
-            
+
             $region = $this->client->getRegion($regionId);
-            
+
             $this->table(
                 ['Field', 'Value'],
                 [
@@ -47,10 +48,10 @@ class AdminGetRegionCommand extends AmazeeAIBaseCommand
                     ['Created At', $region['created_at'] ?? 'N/A'],
                     ['Updated At', $region['updated_at'] ?? 'N/A'],
                     ['Total Users', $region['total_users'] ?? 'N/A'],
-                    ['Active Projects', $region['active_projects'] ?? 'N/A']
+                    ['Active Projects', $region['active_projects'] ?? 'N/A'],
                 ]
             );
-            
+
             return 0;
         } catch (HttpException $e) {
             $this->error(sprintf(
@@ -58,10 +59,12 @@ class AdminGetRegionCommand extends AmazeeAIBaseCommand
                 $e->getStatusCode(),
                 json_encode($e->getResponse(), JSON_PRETTY_PRINT)
             ));
+
             return 1;
         } catch (\Exception $e) {
             $this->error($e->getMessage());
+
             return 1;
         }
     }
-} 
+}

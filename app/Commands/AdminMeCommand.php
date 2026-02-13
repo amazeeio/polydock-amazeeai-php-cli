@@ -2,12 +2,8 @@
 
 namespace App\Commands;
 
-use Illuminate\Console\Scheduling\Schedule;
-use LaravelZero\Framework\Commands\Command;
-
-use FreedomtechHosting\PolydockAmazeeAIBackendClient\Client;
-use FreedomtechHosting\PolydockAmazeeAIBackendClient\Exception\HttpException;
 use App\Enums\TokenType;
+use LaravelZero\Framework\Commands\Command;
 
 class AdminMeCommand extends AmazeeAIBaseCommand
 {
@@ -28,7 +24,7 @@ class AdminMeCommand extends AmazeeAIBaseCommand
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         try {
             $this->initializeClient(TokenType::ADMIN_TOKEN);
@@ -44,6 +40,7 @@ class AdminMeCommand extends AmazeeAIBaseCommand
             );
         } catch (\Exception $e) {
             $this->error($e->getMessage());
+
             return 1;
         }
 

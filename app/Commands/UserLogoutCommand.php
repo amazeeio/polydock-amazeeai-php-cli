@@ -23,22 +23,24 @@ class UserLogoutCommand extends AmazeeAIBaseCommand
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         try {
             // First verify the current token is valid
             $this->initializeClient(TokenType::USER_TOKEN);
-            
+
             // Clear the stored token
             $this->clearUserToken();
-            
+
             $this->info('Successfully logged out');
+
             return 0;
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             // If there's no token or other error, just clear the token file
             $this->clearUserToken();
             $this->info('Local credentials cleared');
+
             return 0;
         }
     }
-} 
+}

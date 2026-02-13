@@ -2,13 +2,8 @@
 
 namespace App\Commands;
 
-use Illuminate\Console\Scheduling\Schedule;
-use LaravelZero\Framework\Commands\Command;
-
-use FreedomtechHosting\PolydockAmazeeAIBackendClient\Client;
-use FreedomtechHosting\PolydockAmazeeAIBackendClient\Exception\HttpException;
-
 use App\Enums\TokenType;
+use FreedomtechHosting\PolydockAmazeeAIBackendClient\Exception\HttpException;
 
 class UserLoginCommand extends AmazeeAIBaseCommand
 {
@@ -29,17 +24,19 @@ class UserLoginCommand extends AmazeeAIBaseCommand
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $email = $this->argument('email');
-        if(!$email) {
+        if (! $email) {
             $this->error('No email provided');
+
             return;
         }
 
         $password = $this->argument('password');
-        if(!$password) {
+        if (! $password) {
             $this->error('No password provided');
+
             return;
         }
 
@@ -50,13 +47,13 @@ class UserLoginCommand extends AmazeeAIBaseCommand
             if (isset($response['access_token']) && isset($response['token_type'])) {
                 // Store the new token
                 $this->storeUserToken($response['access_token']);
-                
+
                 $this->info('Login successful - token stored for future use');
                 $this->table(
                     ['access_token', 'token_type'],
                     [[
                         $response['access_token'],
-                        $response['token_type']
+                        $response['token_type'],
                     ]]
                 );
             } else {
@@ -74,6 +71,7 @@ class UserLoginCommand extends AmazeeAIBaseCommand
             ));
         } catch (\Exception $e) {
             $this->error($e->getMessage());
+
             return;
         }
     }

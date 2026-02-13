@@ -12,7 +12,7 @@ class AdminCreatePrivateAIKeysCommand extends AmazeeAIBaseCommand
      *
      * @var string
      */
-    protected $signature = 'admin:create-private-ai-keys 
+    protected $signature = 'admin:create-private-ai-keys
         {region : The ID of the region}
         {name : Name for the private AI keys record}
         {user-id : The ID of the user to associate the private AI keys with}';
@@ -27,25 +27,28 @@ class AdminCreatePrivateAIKeysCommand extends AmazeeAIBaseCommand
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         try {
             $regionId = $this->argument('region');
             $name = $this->argument('name');
             $userId = $this->argument('user-id');
 
-            if (!$regionId) {
+            if (! $regionId) {
                 $this->error('Region ID is required');
+
                 return 1;
             }
 
-            if (!$name) {
+            if (! $name) {
                 $this->error('Name is required');
+
                 return 1;
             }
 
-            if (!$userId) {
+            if (! $userId) {
                 $this->error('User ID is required');
+
                 return 1;
             }
 
@@ -57,6 +60,7 @@ class AdminCreatePrivateAIKeysCommand extends AmazeeAIBaseCommand
                 $this->info(sprintf('Creating private AI keys in region: %s', $region['name']));
             } catch (\Exception $e) {
                 $this->error('Invalid or inaccessible region');
+
                 return 1;
             }
 
@@ -81,7 +85,7 @@ class AdminCreatePrivateAIKeysCommand extends AmazeeAIBaseCommand
             );
 
             $this->warn('Important: Store these credentials securely - they cannot be retrieved later!');
-            
+
             return 0;
         } catch (HttpException $e) {
             $this->error(sprintf(
@@ -89,10 +93,12 @@ class AdminCreatePrivateAIKeysCommand extends AmazeeAIBaseCommand
                 $e->getStatusCode(),
                 json_encode($e->getResponse(), JSON_PRETTY_PRINT)
             ));
+
             return 1;
         } catch (\Exception $e) {
             $this->error($e->getMessage());
+
             return 1;
         }
     }
-} 
+}

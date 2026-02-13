@@ -2,13 +2,10 @@
 
 namespace App\Commands;
 
-use Illuminate\Console\Scheduling\Schedule;
+use App\Enums\TokenType;
+use FreedomtechHosting\PolydockAmazeeAIBackendClient\Exception\HttpException;
 use LaravelZero\Framework\Commands\Command;
 
-use FreedomtechHosting\PolydockAmazeeAIBackendClient\Client;
-use FreedomtechHosting\PolydockAmazeeAIBackendClient\Exception\HttpException;
-
-use App\Enums\TokenType;
 class AdminListUsersCommand extends AmazeeAIBaseCommand
 {
     /**
@@ -28,7 +25,7 @@ class AdminListUsersCommand extends AmazeeAIBaseCommand
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         try {
             $this->initializeClient(TokenType::ADMIN_TOKEN);
@@ -36,14 +33,12 @@ class AdminListUsersCommand extends AmazeeAIBaseCommand
             $response = $this->client->listUsers();
             $this->table(
                 ['email', 'id', 'is_active', 'is_admin'],
-                array_map(function($user) {
-                    return [
-                        $user['email'],
-                        $user['id'],
-                        $user['is_active'] ? 'Yes' : 'No', 
-                        $user['is_admin'] ? 'Yes' : 'No'
-                    ];
-                }, $response)
+                array_map(fn ($user) => [
+                    $user['email'],
+                    $user['id'],
+                    $user['is_active'] ? 'Yes' : 'No',
+                    $user['is_admin'] ? 'Yes' : 'No',
+                ], $response)
             );
         } catch (HttpException $e) {
             $this->error(sprintf(
@@ -53,6 +48,7 @@ class AdminListUsersCommand extends AmazeeAIBaseCommand
             ));
         } catch (\Exception $e) {
             $this->error($e->getMessage());
+
             return;
         }
     }

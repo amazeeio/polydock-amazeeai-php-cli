@@ -3,14 +3,19 @@
 namespace App\Commands;
 
 use App\Enums\TokenType;
-use LaravelZero\Framework\Commands\Command;
 use FreedomtechHosting\PolydockAmazeeAIBackendClient\Client;
+use Illuminate\Contracts\Container\BindingResolutionException;
+use LaravelZero\Framework\Commands\Command;
+use Symfony\Component\Console\Input\InputOption;
 
 abstract class AmazeeAIBaseCommand extends Command
 {
     protected ?string $token = null;
+
     protected Client $client;
+
     protected string $tokenFile = '.amazeeai-user.token';
+
     protected TokenType $tokenType = TokenType::USER_TOKEN; // Default to user token
 
     public function __construct()
@@ -21,7 +26,7 @@ abstract class AmazeeAIBaseCommand extends Command
 
     protected function addTokenOption(): void
     {
-        $this->addOption('token', 't', \Symfony\Component\Console\Input\InputOption::VALUE_OPTIONAL, 'The API token to use');
+        $this->addOption('token', 't', InputOption::VALUE_OPTIONAL, 'The API token to use');
     }
 
     protected function storeUserToken(string $token): void
@@ -34,15 +39,17 @@ abstract class AmazeeAIBaseCommand extends Command
     {
         if (file_exists($this->tokenFile)) {
             unlink($this->tokenFile);
+
             $this->info('User token cleared');
         }
     }
 
     protected function getUserToken(): ?string
     {
-        if (!file_exists($this->tokenFile)) {
+        if (! file_exists($this->tokenFile)) {
             return null;
         }
+
         return trim(file_get_contents($this->tokenFile));
     }
 
@@ -51,6 +58,7 @@ abstract class AmazeeAIBaseCommand extends Command
         // Command line token always takes precedence
         if ($this->option('token')) {
             $this->info('Using token from command line');
+
             return $this->option('token');
         }
 
@@ -67,23 +75,26 @@ abstract class AmazeeAIBaseCommand extends Command
             if ($runtimeToken) {
                 $this->info('Using stored user token');
             }
-        } else if ($this->tokenType === TokenType::ADMIN_TOKEN) {
+        } elseif ($this->tokenType === TokenType::ADMIN_TOKEN) {
             // Use environment variable for admin token
             $this->info('Using token from environment variable');
             $runtimeToken = env('POLYDOCK_AMAZEEAI_ADMIN_TOKEN');
         }
 
-        if (!$runtimeToken) {
+        if (! $runtimeToken) {
             throw new \RuntimeException('No token available. Please login first or provide a token via --token option or POLYDOCK_AMAZEEAI_ADMIN_TOKEN environment variable.');
         }
 
         return $runtimeToken;
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     protected function initializeClient(TokenType $tokenType = TokenType::USER_TOKEN): void
     {
         $this->tokenType = $tokenType;
         $this->token = $this->getToken();
         $this->client = app()->make(Client::class, ['token' => $this->token]);
     }
-} 
+}

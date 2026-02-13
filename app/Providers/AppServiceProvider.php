@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use FreedomtechHosting\PolydockAmazeeAIBackendClient\Client;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -18,11 +18,12 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+    #[\Override]
     public function register(): void
     {
         $this->app->bind(Client::class, function ($app, array $parameters = []) {
             $token = $parameters['token'] ?? null;
-            
+
             return new Client(
                 config('polydock.base_url'),
                 $token

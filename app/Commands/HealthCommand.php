@@ -2,11 +2,8 @@
 
 namespace App\Commands;
 
-use Illuminate\Console\Scheduling\Schedule;
-use LaravelZero\Framework\Commands\Command;
-
-use FreedomtechHosting\PolydockAmazeeAIBackendClient\Client;
 use App\Enums\TokenType;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class HealthCommand extends AmazeeAIBaseCommand
 {
@@ -26,8 +23,9 @@ class HealthCommand extends AmazeeAIBaseCommand
 
     /**
      * Execute the console command.
+     * @throws BindingResolutionException
      */
-    public function handle()
+    public function handle(): void
     {
         $this->initializeClient(TokenType::NO_TOKEN);
         $response = $this->client->health();
