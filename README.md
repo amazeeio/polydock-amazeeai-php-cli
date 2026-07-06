@@ -1,3 +1,5 @@
+> **NOTE: Deprecated** — see the [polydock-engine](https://github.com/amazeeio/polydock-engine) repo.
+
 <p align="center">
     <img title="Laravel Zero" height="100" src="https://raw.githubusercontent.com/laravel-zero/docs/master/images/logo/laravel-zero-readme.png" alt="Laravel Zero Logo" />
 </p>
